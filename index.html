@@ -347,8 +347,52 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .sbtn:active{transform:scale(.97);filter:brightness(1.15)}
 .sbtn svg{flex-shrink:0}
 .sbtn .sub{margin-left:auto;font-size:11.5px;font-weight:600;color:var(--ink3);font-family:var(--mono);letter-spacing:.02em}
-.sbtn-tg{background:var(--brand);border-color:transparent;color:var(--brand-ink)}
-.sbtn-tg .sub{color:rgba(18,16,12,.65)}
+.sbtn-main{background:var(--brand);border-color:transparent;color:var(--brand-ink)}
+.sbtn-main .sub{color:rgba(18,16,12,.65)}
+.sbtn .stepno{
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;
+  padding:3px 7px;border-radius:6px;background:rgba(255,255,255,.08);color:var(--ink3);
+}
+.sbtn-main .stepno{background:rgba(18,16,12,.14);color:rgba(18,16,12,.75)}
+.done-b{
+  display:none;align-items:center;gap:12px;
+  background:var(--ok-soft);border:1px solid rgba(52,217,123,.35);
+  border-radius:15px;padding:13px 16px;margin-bottom:14px;
+}
+.done-b.on{display:flex}
+.done-b .t{flex:1;font-size:13.5px;font-weight:700;color:var(--ok);line-height:1.45}
+.done-b button{
+  flex-shrink:0;height:40px;padding:0 14px;border-radius:11px;
+  background:var(--ok);color:#08130c;font-size:13px;font-weight:800;
+}
+/* история */
+.h-empty{
+  text-align:center;padding:48px 20px;color:var(--ink3);
+  font-size:14px;font-weight:600;line-height:1.6;
+}
+.h-empty .big{font-size:30px;margin-bottom:10px}
+.h-item{
+  display:flex;align-items:center;gap:12px;
+  background:var(--bg2);border:1px solid var(--line2);border-radius:15px;
+  padding:13px 15px;margin-bottom:8px;
+}
+.h-ico{
+  width:36px;height:36px;border-radius:11px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg3);border:1px solid var(--line);
+}
+.h-body{flex:1;min-width:0}
+.h-name{font-size:14.5px;font-weight:800;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.h-meta{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--ink3);margin-top:2px;letter-spacing:.03em}
+.h-right{flex-shrink:0;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.h-via{
+  font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.08em;
+  padding:4px 8px;border-radius:7px;display:inline-block;
+}
+.h-via.email{background:var(--brand-soft);color:var(--brand)}
+.h-via.sheet{background:var(--ok-soft);color:var(--ok)}
+.h-n{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ink2)}
+.h-note{font-size:12px;font-weight:500;color:var(--ink3);line-height:1.5;padding:6px 2px 14px}
 .sbtn-row{display:flex;gap:9px}
 .sbtn-row .sbtn{flex:1;justify-content:center;padding:0;gap:9px;font-size:14px}
 .field-card{margin-top:9px;background:var(--bg2);border:1px solid var(--line);border-radius:15px;padding:13px 16px;display:none}
@@ -546,27 +590,23 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     </button>
   </div>
   <div class="warn" id="warnUnchecked"></div>
+  <div class="done-b" id="doneBanner">
+    <div class="t">Заявка отправлена на почту и записана в журнал. Готово!</div>
+    <button onclick="doReset()">Новая неделя</button>
+  </div>
   <div class="receipt" id="receipt"></div>
   <div class="send-grid">
-    <button class="sbtn sbtn-tg" onclick="doTg()">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.5 3.5L2.8 10.7c-.8.3-.75 1.4.05 1.65l4.65 1.5 1.8 5.5c.25.75 1.2.9 1.7.3l2.5-3 4.8 3.5c.6.45 1.5.1 1.65-.65l3-14.4c.15-.9-.7-1.6-1.45-1.1zM8 13.5l9.5-6-7.5 7.5-.3 3-1.7-4.5z" fill="currentColor"/></svg>
-      Отправить в Telegram
-      <span class="sub">ДЛС Склад ЗАКАЗ</span>
-    </button>
-    <button class="sbtn" onclick="toggleEmail()">
+    <button class="sbtn sbtn-main" onclick="doEmail()">
+      <span class="stepno">ШАГ 1</span>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M3.5 7.5l8.5 5.5 8.5-5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Email снабженцу
-      <span class="sub" id="emailSub"></span>
+      Отправить на почту
+      <span class="sub" id="emailDone">zakupki@remgruz1.ru</span>
     </button>
-    <div class="field-card" id="emailCard">
-      <div class="field-lbl">Email снабженца</div>
-      <input class="field" id="emailF" type="email" inputmode="email" placeholder="name@company.ru">
-      <button class="field-btn" onclick="doEmail()">Открыть письмо с заявкой</button>
-    </div>
     <button class="sbtn" onclick="doSheets()" id="sheetsBtn">
+      <span class="stepno">ШАГ 2</span>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M4 9h16M4 15h16M12 9v12" stroke="currentColor" stroke-width="2"/></svg>
       Журнал закупок
-      <span class="sub">Google Sheets</span>
+      <span class="sub" id="sheetsDone">Google Sheets</span>
     </button>
     <div class="field-note" id="sheetsNote"></div>
     <div class="sbtn-row">
@@ -596,6 +636,12 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   </div>
 </div>
 
+<!-- ЭКРАН: ИСТОРИЯ -->
+<div class="screen" id="scr-history">
+  <div class="h-note">Отправки заявок с этого устройства: кто, когда и каким способом. История не очищается кнопкой «Новая неделя».</div>
+  <div id="histWrap"></div>
+</div>
+
 <!-- ТАБ-БАР -->
 <div class="tabbar">
   <div class="tabbar-in">
@@ -611,6 +657,10 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 3h14v18l-2.4-1.6L14.2 21l-2.2-1.6L9.8 21l-2.4-1.6L5 21V3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 8h6M9 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       Заявка
       <span class="tab-badge mono" id="repBadge">0</span>
+    </button>
+    <button class="tab" id="tab-history" onclick="goTab('history')">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      История
     </button>
   </div>
 </div>
@@ -633,9 +683,14 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       <div class="instr-step"><div class="instr-n">≡</div><div class="instr-t">Все 24 позиции по разделам — быстрый обзор и правка количества. Квадратик слева — отметка «проверено».</div></div>
     </div>
     <div class="instr-sec">
-      <div class="instr-lbl">Заявка</div>
-      <div class="instr-step"><div class="instr-n">✓</div><div class="instr-t">Чек с итогом + отправка: <b>Telegram</b> в чат «ДЛС Склад ЗАКАЗ» (основной), Email, журнал Google Sheets, XLS/CSV, печать. Перед отправкой укажите <b>фамилию</b>.</div></div>
-      <div class="instr-step"><div class="instr-n">↺</div><div class="instr-t"><b>«Новая неделя»</b> — сброс отметок после отправки. Дата, фамилия и email сохраняются.</div></div>
+      <div class="instr-lbl">Заявка — два шага, по порядку</div>
+      <div class="instr-step"><div class="instr-n">1</div><div class="instr-t"><b>«Отправить на почту»</b> — письмо на <b>zakupki@remgruz1.ru</b> откроется готовым, останется нажать «Отправить».</div></div>
+      <div class="instr-step"><div class="instr-n">2</div><div class="instr-t">Затем <b>«Журнал закупок»</b> — заявка записывается в Google Таблицу, строки помечаются «Офис».</div></div>
+      <div class="instr-step"><div class="instr-n">✓</div><div class="instr-t">После обоих шагов появится зелёная плашка — жмите <b>«Новая неделя»</b>. Перед отправкой укажите <b>фамилию</b>. XLS/CSV и печать — по необходимости.</div></div>
+    </div>
+    <div class="instr-sec">
+      <div class="instr-lbl">История</div>
+      <div class="instr-step"><div class="instr-n">⏱</div><div class="instr-t">Вкладка <b>«История»</b> — кто, когда и как отправлял заявки с этого устройства. Не стирается при сбросе недели.</div></div>
     </div>
     <button class="sh-close" onclick="closeModal('instrModal')">Понятно</button>
   </div>
@@ -1032,7 +1087,7 @@ function renderReport(){
   }
   h+=`<div class="r-meta">дата: ${date}${S._name?' · проверил(а): '+S._name:''}<br>проверено: ${checked}/${N}</div>`;
   r.innerHTML=h;
-  document.getElementById('emailSub').textContent=S._email||'';
+  updateSendState();
 }
 
 // ═══════════════════════════════
@@ -1043,8 +1098,6 @@ function initMeta(){
   document.querySelector('#dateBtn span').textContent=S._date;
   const nb=document.getElementById('nameBtn');
   if(S._name){nb.querySelector('span').textContent=S._name;nb.classList.remove('unset');}
-  const ef=document.getElementById('emailF');
-  if(ef)ef.value=S._email||'';
 }
 function pickDate(){
   const d=prompt('Дата проверки:',S._date||'');
@@ -1066,6 +1119,57 @@ function pickName(){
 // ═══════════════════════════════
 const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbyxPUIa2wT0MQIyw6rZluCd6HDhiYe1Rtyw-NaEviT96a6kA22B4GZkoiFrNxwio68hWw/exec';
 const SHEET_URL='https://docs.google.com/spreadsheets/d/11wSxpfz_09TMdL7jLhvJibncR95_5auL88r4wFkIeq4/';
+const BUYER_EMAIL='zakupki@remgruz1.ru';
+
+// ── ИСТОРИЯ ОТПРАВОК (переживает сброс недели) ──
+const HK='rgo1_hist';
+let HIST=[];
+try{HIST=JSON.parse(localStorage.getItem(HK))||[];}catch(e){}
+const saveHist=()=>{try{localStorage.setItem(HK,JSON.stringify(HIST));}catch(e){}};
+function ordCount(){let n=0;FLAT.forEach(f=>{const st=G(f.id);if(st.ck&&st.qty&&parseFloat(st.qty)>0)n++;});return n;}
+function logSend(via){
+  HIST.unshift({ts:Date.now(),date:S._date||'',name:S._name||'—',n:ordCount(),via});
+  if(HIST.length>100)HIST=HIST.slice(0,100);
+  saveHist();renderHistory();
+}
+function fmtTs(ts){
+  const d=new Date(ts);
+  return d.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'})+' '+
+         d.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+}
+function renderHistory(){
+  const w=document.getElementById('histWrap');
+  if(!w)return;
+  if(!HIST.length){
+    w.innerHTML=`<div class="h-empty"><div class="big">🗂</div>Пока нет отправок.<br>Первая появится здесь после кнопок<br>«Отправить на почту» или «Журнал закупок».</div>`;
+    return;
+  }
+  w.innerHTML=HIST.map(h=>`
+    <div class="h-item">
+      <div class="h-ico">
+        ${h.via==='Email'
+          ?'<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2.5" stroke="var(--brand)" stroke-width="2"/><path d="M3.5 7.5l8.5 5.5 8.5-5.5" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+          :'<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="2.5" stroke="var(--ok)" stroke-width="2"/><path d="M4 9h16M4 15h16M12 9v12" stroke="var(--ok)" stroke-width="2"/></svg>'}
+      </div>
+      <div class="h-body">
+        <div class="h-name">${h.name}</div>
+        <div class="h-meta">${fmtTs(h.ts)}${h.date&&!fmtTs(h.ts).startsWith(h.date)?' · проверка '+h.date:''}</div>
+      </div>
+      <div class="h-right">
+        <span class="h-via ${h.via==='Email'?'email':'sheet'}">${h.via==='Email'?'ПОЧТА':'ЖУРНАЛ'}</span>
+        <div class="h-n">${h.n} поз.</div>
+      </div>
+    </div>`).join('');
+}
+function updateSendState(){
+  const e=document.getElementById('emailDone');
+  const sh=document.getElementById('sheetsDone');
+  const t=ts=>new Date(ts).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+  if(e)e.textContent=S._sentE?('✓ '+t(S._sentE)):BUYER_EMAIL;
+  if(sh)sh.textContent=S._sentS?('✓ '+t(S._sentS)):'Google Sheets';
+  const b=document.getElementById('doneBanner');
+  if(b)b.className='done-b'+(S._sentE&&S._sentS?' on':'');
+}
 
 function buildText(){
   const date=S._date||'—';
@@ -1084,16 +1188,10 @@ function buildText(){
   }
   return t;
 }
-function doTg(){window.open('https://t.me/share/url?url=&text='+encodeURIComponent(buildText()));}
-function toggleEmail(){
-  document.getElementById('emailCard').classList.toggle('on');
-  const ef=document.getElementById('emailF');
-  if(document.getElementById('emailCard').classList.contains('on'))ef.focus();
-}
 function doEmail(){
-  const em=(document.getElementById('emailF').value||'').trim();
-  if(em){S._email=em;save();document.getElementById('emailSub').textContent=em;}
-  window.location.href=`mailto:${em}?subject=${encodeURIComponent('Заявка по офису RemGruz #1 · '+(S._date||''))}&body=${encodeURIComponent(buildText())}`;
+  window.location.href=`mailto:${BUYER_EMAIL}?subject=${encodeURIComponent('Заявка по офису RemGruz #1 · '+(S._date||''))}&body=${encodeURIComponent(buildText())}`;
+  S._sentE=Date.now();save();
+  logSend('Email');updateSendState();vib([12]);
 }
 function doSheets(){
   const grouped=buildOrders();
@@ -1120,6 +1218,8 @@ function doSheets(){
     btn.style.opacity=1;btn.disabled=false;
     note.className='field-note on';
     note.innerHTML=`✓ Отправлено: ${items.length} поз., строки помечены «Офис». <a href="${SHEET_URL}" target="_blank">Открыть журнал →</a>`;
+    S._sentS=Date.now();save();
+    logSend('Журнал');updateSendState();vib([12,40,12]);
   },1800);
 }
 function doExportXLSX(){
@@ -1169,13 +1269,13 @@ function doPrint(){
   window.print();
 }
 function doReset(){
-  if(confirm('Начать новую неделю?\nВсе отметки очистятся. Дата, фамилия и email сохранятся.')){
+  if(confirm('Начать новую неделю?\nОтметки очистятся. Фамилия и история отправок сохранятся.')){
     const d=S._date,e=S._email,n=S._name,i=S._instD;
     try{localStorage.removeItem(SK);}catch(ex){}
     S={};if(e)S._email=e;if(n)S._name=n;if(i)S._instD=i;
     const now=new Date();S._date=now.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'});
     S._ti=0;tourIdx=0;save();
-    buildList();initMeta();renderTour();renderReport();
+    buildList();initMeta();renderTour();renderReport();updateSendState();
     goTab('tour');
   }
 }
@@ -1186,14 +1286,15 @@ function doReset(){
 let curTab='tour';
 function goTab(t){
   curTab=t;
-  ['tour','list','report'].forEach(x=>{
+  ['tour','list','report','history'].forEach(x=>{
     document.getElementById('scr-'+x).classList.toggle('on',x===t);
     document.getElementById('tab-'+x).classList.toggle('on',x===t);
   });
   window.scrollTo({top:0});
   if(t==='tour')renderTour();
-  if(t==='report')renderReport();
+  if(t==='report'){renderReport();updateSendState();}
   if(t==='list')updateListStats();
+  if(t==='history')renderHistory();
   updateHeader();
   vib(6);
 }
@@ -1222,6 +1323,8 @@ checkInstHint();
 (function(){const fu=firstUnchecked(tourIdx);if(fu>=0&&G(FLAT[tourIdx].id).ck)tourIdx=fu;})();
 renderTour();
 renderReport();
+renderHistory();
+updateSendState();
 updateHeader();
 </script>
 </body>
