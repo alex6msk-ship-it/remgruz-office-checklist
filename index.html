@@ -990,7 +990,11 @@ function initSpy(){
       if(en.isIntersecting){
         document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
         const chip=document.getElementById('chip_'+en.target.id.replace('sec_',''));
-        if(chip){chip.classList.add('active');chip.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+        if(chip){
+          chip.classList.add('active');
+          const row=document.getElementById('chipsRow');
+          if(row)row.scrollTo({left:Math.max(0,chip.offsetLeft-(row.clientWidth-chip.offsetWidth)/2),behavior:'smooth'});
+        }
       }
     });
   },{rootMargin:'-30% 0px -60% 0px'});
