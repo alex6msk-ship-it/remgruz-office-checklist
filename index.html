@@ -92,15 +92,18 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   color:var(--ink2);flex-shrink:0;letter-spacing:.02em;
 }
 .top-count b{color:var(--ok);font-weight:700}
-/* карта обхода: 24 риски */
-.ticks{display:flex;gap:3px;margin-top:10px}
-.tick{
-  flex:1;height:4px;border-radius:2px;background:var(--bg3);
-  transition:background .25s;
+/* карта обхода: сегменты разделов (ширина = числу позиций) */
+.ticks{display:flex;gap:4px;margin-top:10px}
+.seg{
+  height:4px;border-radius:2px;background:var(--bg3);
+  position:relative;overflow:hidden;min-width:8px;
 }
-.tick.ok{background:var(--ok)}
-.tick.ord{background:var(--ord)}
-.tick.cur{background:var(--brand);box-shadow:0 0 8px rgba(255,140,26,.55)}
+.seg-fill{
+  position:absolute;left:0;top:0;bottom:0;width:0%;
+  background:var(--ok);border-radius:2px;
+  transition:width .35s var(--ease),background .25s;
+}
+.seg.cur{background:rgba(255,140,26,.28);box-shadow:0 0 7px rgba(255,140,26,.35)}
 
 /* ═══ ЭКРАНЫ ═══ */
 .screen{display:none;max-width:680px;margin:0 auto;
@@ -673,14 +676,14 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     <div class="sh-sub">Чек-лист офиса · каждый понедельник утром</div>
     <div class="instr-sec">
       <div class="instr-lbl">Режим «Обход» — основной</div>
-      <div class="instr-step"><div class="instr-n">1</div><div class="instr-t">Приложение показывает позиции <b>по одной</b>. Вопрос всегда один: <b>хватит ли этого на 2 недели?</b></div></div>
+      <div class="instr-step"><div class="instr-n">1</div><div class="instr-t">Приложение ведёт по всем разделам — обе кухни, оба туалета, канцелярия, бонусы, хозблок (49 позиций) — <b>по одной</b>. Вопрос всегда один: <b>хватит ли этого на 2 недели?</b></div></div>
       <div class="instr-step"><div class="instr-n">2</div><div class="instr-t">Хватает — жмите <b>зелёную кнопку</b>. Не хватает — наберите количество кнопками − / + и жмите <b>красную</b>.</div></div>
       <div class="instr-step"><div class="instr-n">3</div><div class="instr-t">Приложение <b>само листает</b> к следующей непроверенной позиции. Стрелки ‹ › и свайп — ручная навигация, «Пропустить» — отложить.</div></div>
       <div class="instr-step"><div class="instr-n">4</div><div class="instr-t">Полоса вверху — карта обхода: <b>зелёное</b> — в норме, <b>красное</b> — к заказу, <b>оранжевая</b> — где вы сейчас.</div></div>
     </div>
     <div class="instr-sec">
       <div class="instr-lbl">Список</div>
-      <div class="instr-step"><div class="instr-n">≡</div><div class="instr-t">Все 24 позиции по разделам — быстрый обзор и правка количества. Квадратик слева — отметка «проверено».</div></div>
+      <div class="instr-step"><div class="instr-n">≡</div><div class="instr-t">Все 49 позиций по 7 разделам — быстрый обзор и правка количества. Квадратик слева — отметка «проверено».</div></div>
     </div>
     <div class="instr-sec">
       <div class="instr-lbl">Заявка — два шага, по порядку</div>
@@ -720,13 +723,45 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 // ДАННЫЕ — 24 позиции, 4 раздела. ID не менять!
 // ═══════════════════════════════
 const SECTIONS=[
-  {id:'kitchen',label:'Кухня',color:'#ffb340',items:[
+  {id:'kitchen1',label:'Кухня 1',fullLabel:'Кухня №1',color:'#ffb340',items:[
     {id:'of_k01',name:'Стаканы',unit:'уп'},
     {id:'of_k02',name:'Вода',unit:'бут'},
-    {id:'of_k03',name:'Чай',hint:'для офиса',unit:'уп'},
+    {id:'of_k03',name:'Чай',unit:'уп'},
     {id:'of_k04',name:'Кофе',unit:'уп'},
     {id:'of_k05',name:'Сахар',unit:'уп'},
     {id:'of_k06',name:'Салфетки',unit:'уп'}
+  ]},
+  {id:'kitchen2',label:'Кухня 2',fullLabel:'Кухня №2',color:'#ff9c5e',items:[
+    {id:'of_k201',name:'Стаканы',unit:'уп'},
+    {id:'of_k202',name:'Вода',unit:'бут'},
+    {id:'of_k203',name:'Чай',unit:'уп'},
+    {id:'of_k204',name:'Кофе',unit:'уп'},
+    {id:'of_k205',name:'Сахар',unit:'уп'},
+    {id:'of_k206',name:'Салфетки',unit:'уп'}
+  ]},
+  {id:'toilet1',label:'Туалет 1',fullLabel:'Туалет №1',color:'#58b7e8',items:[
+    {id:'of_t101',name:'Туалетная бумага',unit:'рул'},
+    {id:'of_t102',name:'Мыло жидкое',hint:'с дозатором',unit:'фл'},
+    {id:'of_t103',name:'Мыло твёрдое',unit:'шт'},
+    {id:'of_t104',name:'Освежитель воздуха',hint:'аэрозоль',unit:'шт'},
+    {id:'of_t105',name:'Полотенце маленькое',unit:'шт'},
+    {id:'of_t106',name:'Полотенце большое',unit:'шт'},
+    {id:'of_t107',name:'Ёршик',unit:'шт'},
+    {id:'of_t108',name:'Швабра',unit:'шт'},
+    {id:'of_t109',name:'Крючки для полотенец',unit:'уп'},
+    {id:'of_t110',name:'Губка',unit:'шт'}
+  ]},
+  {id:'toilet2',label:'Туалет 2',fullLabel:'Туалет №2',color:'#3f8fd9',items:[
+    {id:'of_t201',name:'Туалетная бумага',unit:'рул'},
+    {id:'of_t202',name:'Мыло жидкое',hint:'с дозатором',unit:'фл'},
+    {id:'of_t203',name:'Мыло твёрдое',unit:'шт'},
+    {id:'of_t204',name:'Освежитель воздуха',hint:'аэрозоль',unit:'шт'},
+    {id:'of_t205',name:'Полотенце маленькое',unit:'шт'},
+    {id:'of_t206',name:'Полотенце большое',unit:'шт'},
+    {id:'of_t207',name:'Ёршик',unit:'шт'},
+    {id:'of_t208',name:'Швабра',unit:'шт'},
+    {id:'of_t209',name:'Крючки для полотенец',unit:'уп'},
+    {id:'of_t210',name:'Губка',unit:'шт'}
   ]},
   {id:'stationery',label:'Канцелярия',color:'#6f8dff',items:[
     {id:'of_c01',name:'Ручки',unit:'шт'},
@@ -744,7 +779,6 @@ const SECTIONS=[
     {id:'of_b02',name:'Чай',hint:'бонус клиенту',unit:'уп'}
   ]},
   {id:'household',label:'Хозблок',fullLabel:'Хозяйственные расходники',color:'#3ecfc0',items:[
-    {id:'of_h01',name:'Туалетная бумага',unit:'рул'},
     {id:'of_h02',name:'Порошок',unit:'уп'},
     {id:'of_h03',name:'Перчатки резиновые',unit:'пар'},
     {id:'of_h04',name:'Губки',unit:'уп'},
@@ -775,7 +809,9 @@ const vib=p=>{if(navigator.vibrate)navigator.vibrate(p);};
 // ═══════════════════════════════
 function buildTicks(){
   const t=document.getElementById('ticks');
-  t.innerHTML=FLAT.map((f,i)=>`<div class="tick" id="tick_${i}"></div>`).join('');
+  t.innerHTML=SECTIONS.map(sec=>
+    `<div class="seg" id="seg_${sec.id}" style="flex:${sec.items.length}"><div class="seg-fill" id="segf_${sec.id}"></div></div>`
+  ).join('');
 }
 function updateHeader(){
   let checked=0,ord=0;
@@ -783,10 +819,20 @@ function updateHeader(){
     const st=G(f.id);
     checked+=st.ck?1:0; ord+=statusOf(st)==='ord'?1:0;
   });
-  FLAT.forEach((f,i)=>{
-    const cls=statusOf(G(f.id));
-    const el=document.getElementById('tick_'+i);
-    if(el)el.className='tick '+(cls==='ord'?'ord':cls==='ok'?'ok':'')+(i===tourIdx&&curTab==='tour'&&checked<N?' cur':'');
+  const curSec=(curTab==='tour'&&checked<N)?FLAT[tourIdx].sec.id:null;
+  SECTIONS.forEach(sec=>{
+    let sCk=0,sOrd=0;
+    sec.items.forEach(item=>{
+      const st=G(item.id);
+      if(st.ck){sCk++;if(statusOf(st)==='ord')sOrd++;}
+    });
+    const fill=document.getElementById('segf_'+sec.id);
+    if(fill){
+      fill.style.width=Math.round(sCk/sec.items.length*100)+'%';
+      fill.style.background=sOrd>0?'var(--ord)':'var(--ok)';
+    }
+    const seg=document.getElementById('seg_'+sec.id);
+    if(seg)seg.className='seg'+(sec.id===curSec?' cur':'');
   });
   document.getElementById('topCount').innerHTML=
     checked===N?`<b>${checked}/${N}</b>`:`${checked}/${N}`;
