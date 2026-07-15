@@ -676,14 +676,14 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     <div class="sh-sub">Чек-лист офиса · каждый понедельник утром</div>
     <div class="instr-sec">
       <div class="instr-lbl">Режим «Обход» — основной</div>
-      <div class="instr-step"><div class="instr-n">1</div><div class="instr-t">Приложение ведёт по всем разделам — обе кухни, оба туалета, канцелярия, бонусы, хозблок (49 позиций) — <b>по одной</b>. Вопрос всегда один: <b>хватит ли этого на 2 недели?</b></div></div>
+      <div class="instr-step"><div class="instr-n">1</div><div class="instr-t">Приложение ведёт по всем разделам — обе кухни, оба туалета, канцелярия, бонусы, хозблок, маркетинг (50 позиций) — <b>по одной</b>. Вопрос всегда один: <b>хватит ли этого на 2 недели?</b></div></div>
       <div class="instr-step"><div class="instr-n">2</div><div class="instr-t">Хватает — жмите <b>зелёную кнопку</b>. Не хватает — наберите количество кнопками − / + и жмите <b>красную</b>.</div></div>
       <div class="instr-step"><div class="instr-n">3</div><div class="instr-t">Приложение <b>само листает</b> к следующей непроверенной позиции. Стрелки ‹ › и свайп — ручная навигация, «Пропустить» — отложить.</div></div>
       <div class="instr-step"><div class="instr-n">4</div><div class="instr-t">Полоса вверху — карта обхода: <b>зелёное</b> — в норме, <b>красное</b> — к заказу, <b>оранжевая</b> — где вы сейчас.</div></div>
     </div>
     <div class="instr-sec">
       <div class="instr-lbl">Список</div>
-      <div class="instr-step"><div class="instr-n">≡</div><div class="instr-t">Все 49 позиций по 7 разделам — быстрый обзор и правка количества. Квадратик слева — отметка «проверено».</div></div>
+      <div class="instr-step"><div class="instr-n">≡</div><div class="instr-t">Все 50 позиций по 8 разделам — быстрый обзор и правка количества. Квадратик слева — отметка «проверено».</div></div>
     </div>
     <div class="instr-sec">
       <div class="instr-lbl">Заявка — два шага, по порядку</div>
@@ -720,7 +720,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 
 <script>
 // ═══════════════════════════════
-// ДАННЫЕ — 24 позиции, 4 раздела. ID не менять!
+// ДАННЫЕ — 50 позиций, 8 разделов. ID не менять!
 // ═══════════════════════════════
 const SECTIONS=[
   {id:'kitchen1',label:'Кухня 1',fullLabel:'Кухня №1',color:'#ffb340',items:[
@@ -785,6 +785,9 @@ const SECTIONS=[
     {id:'of_h05',name:'Тряпки',unit:'уп'},
     {id:'of_h06',name:'Чистящие средства',unit:'шт'},
     {id:'of_h07',name:'Мусорные пакеты',unit:'уп'}
+  ]},
+  {id:'marketing',label:'Маркетинг',color:'#ff7ab8',items:[
+    {id:'of_m01',name:'Рекламные наклейки',hint:'круглые',unit:'уп'}
   ]}
 ];
 
